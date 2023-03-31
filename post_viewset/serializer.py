@@ -1,0 +1,17 @@
+from rest_framework import serializers
+
+from rest_framework.exceptions import ValidationError
+
+from .models import Post
+
+
+class PostViewSetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['id', 'title', 'image', 'body', 'created_date']
+
+    def validate(self, attrs): # kirgizvotkan malumotimizni tekshiradi
+        title = attrs.get('title')
+        if title and title.islower():
+            raise ValidationError({"title": 'first letter of title must be uppercase'})
+        return attrs
